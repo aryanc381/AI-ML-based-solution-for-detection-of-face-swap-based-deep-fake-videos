@@ -78,7 +78,7 @@ The goal is to develop an AI/ML-based solution to authenticate face-swap deepfak
 
 ### Contact
 
-For questions or further information, please contact venomc381@gmail.com](mailto:venomc381@gmail.com).
+For questions or further information, please contact us [here](mailto:venomc381@gmail.com).
 
 ---
 
