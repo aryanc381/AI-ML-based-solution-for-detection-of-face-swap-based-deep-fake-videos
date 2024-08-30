@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const multer_1 = __importDefault(require("multer"));
 const child_process_1 = require("child_process");
@@ -29,14 +30,15 @@ const storage = multer_1.default.diskStorage({
     }
 });
 const upload = (0, multer_1.default)({ storage });
-let fileName = '';
+let fileName = 'uploads/aagfhgtpmv.mp4';
 let videoFileName = ''; // To store uploaded video file name
+app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 // Function to run the Python script
 function runPythonScript(image_path) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const { stdout, stderr } = yield execPromise(`python ./scripts/app.py "uploads/${image_path}"`);
+            const { stdout, stderr } = yield execPromise(`python ./app.py "./uploads/${image_path}"`);
             if (stderr) {
                 console.error(`stderr: ${stderr}`);
             }
@@ -54,12 +56,11 @@ app.get('/result', (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         return res.status(400).json({ message: 'No file has been uploaded yet' });
     }
     const result = yield runPythonScript(fileName);
-    const segments = result.split('\r\n');
-    const extractedValue = segments[segments.length - 2];
+    // const segments = result.split('\r\n');
+    // const extractedValue = segments[segments.length - 2];
     res.json({
         status: 'completed',
         originalResult: result,
-        result: extractedValue.trim(),
         message: 'Let us know if anything is wrong',
     });
 }));
